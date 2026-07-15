@@ -22,8 +22,8 @@ interface UIState {
   setSelectedCategoryId: (id: string | null) => void
   selectedTopicId: string | null
   setSelectedTopicId: (id: string | null) => void
-  activeView: 'dashboard' | 'categories' | 'timer'
-  setActiveView: (view: 'dashboard' | 'categories' | 'timer') => void
+  activeView: 'dashboard' | 'categories' | 'timer' | 'analytics'
+  setActiveView: (view: 'dashboard' | 'categories' | 'timer' | 'analytics') => void
 }
 
 export const useUIStore = create<UIState>((set) => ({
