@@ -21,10 +21,10 @@ export async function updateCategory(id: string, changes: Partial<Category>) {
 
 export async function deleteCategory(id: string) {
   await db.categories.delete(id)
-  // cascade: delete topics/tasks under this category
   const topics = await db.topics.where('categoryId').equals(id).toArray()
   await db.topics.bulkDelete(topics.map(t => t.id))
   await db.tasks.where('categoryId').equals(id).delete()
+  await db.sessions.where('categoryId').equals(id).delete()
 }
 
 export async function reorderCategories(orderedIds: string[]) {

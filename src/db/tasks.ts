@@ -22,6 +22,7 @@ export async function updateTask(id: string, changes: Partial<Task>) {
 
 export async function deleteTask(id: string) {
   await db.tasks.delete(id)
+  await db.sessions.where('taskId').equals(id).delete()
 }
 
 export async function setTaskStatus(id: string, status: Task['status']) {

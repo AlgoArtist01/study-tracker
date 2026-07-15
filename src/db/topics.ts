@@ -24,6 +24,7 @@ export async function updateTopic(id: string, changes: Partial<Topic>) {
 export async function deleteTopic(id: string) {
   await db.topics.delete(id)
   await db.tasks.where('topicId').equals(id).delete()
+  await db.sessions.where('topicId').equals(id).delete()
 }
 
 export async function reorderTopics(orderedIds: string[]) {

@@ -1,10 +1,11 @@
 import { Toaster } from '@/components/ui/sonner'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { LayoutDashboard, FolderKanban } from 'lucide-react'
+import { LayoutDashboard, FolderKanban, Timer } from 'lucide-react'
 import { CategoryList } from '@/features/categories/CategoryList'
 import { CategoryDetail } from '@/features/categories/CategoryDetail'
 import { TopicDetail } from '@/features/topics/TopicDetail'
 import { Dashboard } from '@/features/dashboard/Dashboard'
+import { TimerPage } from '@/features/timer/TimerPage'
 import { useUIStore } from '@/store/ui-store'
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
   const inDrillDown = !!selectedCategoryId || !!selectedTopicId
 
   function handleViewChange(view: string) {
-    setActiveView(view as 'dashboard' | 'categories')
+    setActiveView(view as 'dashboard' | 'categories' | 'timer')
     setSelectedCategoryId(null)
     setSelectedTopicId(null)
   }
@@ -31,6 +32,7 @@ function App() {
             <TabsList>
               <TabsTrigger value="dashboard"><LayoutDashboard className="mr-1.5 h-4 w-4" /> Dashboard</TabsTrigger>
               <TabsTrigger value="categories"><FolderKanban className="mr-1.5 h-4 w-4" /> Categories</TabsTrigger>
+              <TabsTrigger value="timer"><Timer className="mr-1.5 h-4 w-4" /> Timer</TabsTrigger>
             </TabsList>
           </Tabs>
         )}
@@ -41,6 +43,8 @@ function App() {
           <CategoryDetail categoryId={selectedCategoryId} />
         ) : activeView === 'dashboard' ? (
           <Dashboard />
+        ) : activeView === 'timer' ? (
+          <TimerPage />
         ) : (
           <CategoryList />
         )}
