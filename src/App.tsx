@@ -8,6 +8,7 @@ import { Dashboard } from '@/features/dashboard/Dashboard'
 import { TimerPage } from '@/features/timer/TimerPage'
 import { AnalyticsPage } from '@/features/analytics/AnalyticsPage'
 import { useUIStore } from '@/store/ui-store'
+import { ThemeToggle } from '@/components/layout/ThemeToggle'
 
 function App() {
   const selectedCategoryId = useUIStore((s) => s.selectedCategoryId)
@@ -29,14 +30,17 @@ function App() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-6xl px-6 py-8">
         {!inDrillDown && (
-          <Tabs value={activeView} onValueChange={handleViewChange} className="mb-6">
-            <TabsList>
-              <TabsTrigger value="dashboard"><LayoutDashboard className="mr-1.5 h-4 w-4" /> Dashboard</TabsTrigger>
-              <TabsTrigger value="categories"><FolderKanban className="mr-1.5 h-4 w-4" /> Categories</TabsTrigger>
-              <TabsTrigger value="timer"><Timer className="mr-1.5 h-4 w-4" /> Timer</TabsTrigger>
-              <TabsTrigger value="analytics"><BarChart3 className="mr-1.5 h-4 w-4" /> Analytics</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <div className="mb-6 flex items-center justify-between">
+            <Tabs value={activeView} onValueChange={handleViewChange}>
+              <TabsList>
+                <TabsTrigger value="dashboard"><LayoutDashboard className="mr-1.5 h-4 w-4" /> Dashboard</TabsTrigger>
+                <TabsTrigger value="categories"><FolderKanban className="mr-1.5 h-4 w-4" /> Categories</TabsTrigger>
+                <TabsTrigger value="timer"><Timer className="mr-1.5 h-4 w-4" /> Timer</TabsTrigger>
+                <TabsTrigger value="analytics"><BarChart3 className="mr-1.5 h-4 w-4" /> Analytics</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <ThemeToggle />
+          </div>
         )}
 
         {selectedTopicId ? (
