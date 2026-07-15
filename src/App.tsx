@@ -1,20 +1,46 @@
 import { Toaster } from '@/components/ui/sonner'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { LayoutDashboard, FolderKanban } from 'lucide-react'
 import { CategoryList } from '@/features/categories/CategoryList'
 import { CategoryDetail } from '@/features/categories/CategoryDetail'
 import { TopicDetail } from '@/features/topics/TopicDetail'
+import { Dashboard } from '@/features/dashboard/Dashboard'
 import { useUIStore } from '@/store/ui-store'
 
 function App() {
   const selectedCategoryId = useUIStore((s) => s.selectedCategoryId)
   const selectedTopicId = useUIStore((s) => s.selectedTopicId)
+  const activeView = useUIStore((s) => s.activeView)
+  const setActiveView = useUIStore((s) => s.setActiveView)
+  const setSelectedCategoryId = useUIStore((s) => s.setSelectedCategoryId)
+  const setSelectedTopicId = useUIStore((s) => s.setSelectedTopicId)
+
+  const inDrillDown = !!selectedCategoryId || !!selectedTopicId
+
+  function handleViewChange(view: string) {
+    setActiveView(view as 'dashboard' | 'categories')
+    setSelectedCategoryId(null)
+    setSelectedTopicId(null)
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-6xl px-6 py-8">
+        {!inDrillDown && (
+          <Tabs value={activeView} onValueChange={handleViewChange} className="mb-6">
+            <TabsList>
+              <TabsTrigger value="dashboard"><LayoutDashboard className="mr-1.5 h-4 w-4" /> Dashboard</TabsTrigger>
+              <TabsTrigger value="categories"><FolderKanban className="mr-1.5 h-4 w-4" /> Categories</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        )}
+
         {selectedTopicId ? (
           <TopicDetail topicId={selectedTopicId} />
         ) : selectedCategoryId ? (
           <CategoryDetail categoryId={selectedCategoryId} />
+        ) : activeView === 'dashboard' ? (
+          <Dashboard />
         ) : (
           <CategoryList />
         )}
