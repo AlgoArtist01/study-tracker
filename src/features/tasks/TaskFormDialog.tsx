@@ -22,11 +22,15 @@ interface Props {
   categoryId: string
   topicId: string
   task?: Task
-  trigger: React.ReactElement
+  trigger?: React.ReactElement
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
-export function TaskFormDialog({ categoryId, topicId, task, trigger }: Props) {
-  const [open, setOpen] = useState(false)
+export function TaskFormDialog({ categoryId, topicId, task, trigger, open: controlledOpen, onOpenChange }: Props) {
+  const [internalOpen, setInternalOpen] = useState(false)
+  const open = controlledOpen ?? internalOpen
+  const setOpen = onOpenChange ?? setInternalOpen
 
   function defaults(): TaskFormInput {
     return {
@@ -80,7 +84,7 @@ export function TaskFormDialog({ categoryId, topicId, task, trigger }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={trigger} />
+      {trigger && <DialogTrigger render={trigger} />}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{task ? 'Edit task' : 'New task'}</DialogTitle>

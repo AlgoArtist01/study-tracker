@@ -20,6 +20,7 @@ export function CategoryCard({ category }: { category: Category }) {
   const Icon = CATEGORY_ICONS[category.icon] ?? CATEGORY_ICONS.book
   const setSelectedCategoryId = useUIStore((s) => s.setSelectedCategoryId)
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
 
   async function handleDelete() {
     await deleteCategory(category.id)
@@ -62,7 +63,7 @@ export function CategoryCard({ category }: { category: Category }) {
               <CategoryFormDialog
                 category={category}
                 trigger={
-                  <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+                  <DropdownMenuItem onClick={() => setEditOpen(true)}>
                     <Pencil className="mr-2 h-4 w-4" /> Edit
                   </DropdownMenuItem>
                 }
@@ -89,6 +90,7 @@ export function CategoryCard({ category }: { category: Category }) {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          <CategoryFormDialog category={category} open={editOpen} onOpenChange={setEditOpen} />
         </div>
       </CardContent>
     </Card>

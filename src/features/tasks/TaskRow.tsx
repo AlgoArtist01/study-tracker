@@ -22,6 +22,7 @@ import {
 
 export function TaskRow({ task }: { task: Task }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.id })
+  const [editOpen, setEditOpen] = useState(false)
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -89,7 +90,7 @@ export function TaskRow({ task }: { task: Task }) {
             topicId={task.topicId ?? ''}
             task={task}
             trigger={
-              <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+              <DropdownMenuItem onClick={() => setEditOpen(true)}>
                 <Pencil className="mr-2 h-4 w-4" /> Edit
               </DropdownMenuItem>
             }
@@ -127,6 +128,7 @@ export function TaskRow({ task }: { task: Task }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <TaskFormDialog categoryId={task.categoryId} topicId={task.topicId ?? ''} task={task} open={editOpen} onOpenChange={setEditOpen} />
     </div>
   )
 }

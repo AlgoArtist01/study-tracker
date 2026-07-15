@@ -22,6 +22,7 @@ import { useState } from 'react'
 export function TopicRow({ topic }: { topic: Topic }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: topic.id })
   const setSelectedTopicId = useUIStore((s) => s.setSelectedTopicId)
+  const [editOpen, setEditOpen] = useState(false)
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -78,7 +79,7 @@ export function TopicRow({ topic }: { topic: Topic }) {
               categoryId={topic.categoryId}
               topic={topic}
               trigger={
-                <DropdownMenuItem onClick={(e) => e.preventDefault()}>
+                <DropdownMenuItem onClick={() => setEditOpen(true)}>
                   <Pencil className="mr-2 h-4 w-4" /> Edit
                 </DropdownMenuItem>
               }
@@ -104,6 +105,7 @@ export function TopicRow({ topic }: { topic: Topic }) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <TopicFormDialog categoryId={topic.categoryId} topic={topic} open={editOpen} onOpenChange={setEditOpen} />
       </div>
     </div>
   )

@@ -17,11 +17,16 @@ import type { Category } from '@/types/models'
 
 interface Props {
   category?: Category
-  trigger: React.ReactElement
+  trigger?: React.ReactElement
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
-export function CategoryFormDialog({ category, trigger }: Props) {
-  const [open, setOpen] = useState(false)
+export function CategoryFormDialog({ category, trigger, open: controlledOpen, onOpenChange }: Props) {
+  const [internalOpen, setInternalOpen] = useState(false)
+  const open = controlledOpen ?? internalOpen
+  const setOpen = onOpenChange ?? setInternalOpen
+
   const {
     register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting },
   } = useForm<CategoryFormValues>({
@@ -65,7 +70,7 @@ export function CategoryFormDialog({ category, trigger }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={trigger} />
+      {trigger && <DialogTrigger render={trigger} />}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{category ? 'Edit category' : 'New category'}</DialogTitle>

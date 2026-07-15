@@ -22,11 +22,15 @@ import type { Topic } from '@/types/models'
 interface Props {
     categoryId: string
     topic?: Topic
-    trigger: React.ReactElement
+    trigger?: React.ReactElement
+    open?: boolean
+    onOpenChange?: (open: boolean) => void
 }
 
-export function TopicFormDialog({ categoryId, topic, trigger }: Props) {
-    const [open, setOpen] = useState(false)
+export function TopicFormDialog({ categoryId, topic, trigger, open: controlledOpen, onOpenChange }: Props) {
+    const [internalOpen, setInternalOpen] = useState(false)
+    const open = controlledOpen ?? internalOpen
+    const setOpen = onOpenChange ?? setInternalOpen
 
     function defaults(): TopicFormInput {
         return {
@@ -85,7 +89,7 @@ export function TopicFormDialog({ categoryId, topic, trigger }: Props) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger render={trigger} />
+            {trigger && <DialogTrigger render={trigger} />}
             <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{topic ? 'Edit topic' : 'New topic'}</DialogTitle>
